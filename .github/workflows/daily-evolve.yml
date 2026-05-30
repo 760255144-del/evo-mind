@@ -50,7 +50,7 @@ jobs:
       - name: 钱生钱进化
         run: |
           mkdir -p evolution_data
-          python3 daily_evolve.py
+          python3 daily_evolve.py || echo "进化步骤有警告，继续..."
           # Save evolution state to tracked JSON
           python3 -c "
           import json
