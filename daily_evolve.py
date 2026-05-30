@@ -407,8 +407,12 @@ class DailyEvolutionEngine:
                 class _FallbackEmbedding:
                     @property
                     def dimension(self): return 384
-                    async def encode(self, t): return [0.0] * 384
-                    async def encode_batch(self, t, b=32): return [[0.0]*384 for _ in t]
+                    async def encode(self, t):
+                        import random as _r
+                        _r.seed(hash(str(t)) & 0xFFFFFFFF)
+                        return [_r.uniform(-1, 1) for _ in range(384)]
+                    async def encode_batch(self, texts, b=32):
+                        return [await self.encode(t) for t in texts]
                 embedding = _FallbackEmbedding()
 
             if vector_store is None:
