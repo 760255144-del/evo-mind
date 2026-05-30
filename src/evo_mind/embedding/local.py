@@ -56,8 +56,10 @@ class LocalEmbeddingEngine:
         )
 
     def _load_model(self):
-        from sentence_transformers import SentenceTransformer
-
+        try:
+            from sentence_transformers import SentenceTransformer
+        except ImportError:
+            raise RuntimeError("sentence-transformers not installed. Run: pip install sentence-transformers")
         return SentenceTransformer(self.model_name, device=self.device)
 
     async def encode(self, text: str) -> list[float]:
