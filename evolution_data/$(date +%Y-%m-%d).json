@@ -1,0 +1,5 @@
+{
+  "date": "$(date +%Y-%m-%d)",
+  "memories": 423,
+  "rules": 6
+}
