@@ -49,16 +49,12 @@ jobs:
 
       - name: 钱生钱进化
         run: |
+          set +e
           mkdir -p evolution_data
-          python3 daily_evolve.py || echo "进化步骤有警告，继续..."
-          # Save evolution state to tracked JSON
+          python3 daily_evolve.py
           python3 -c "
-          import json
+          import json, sqlite3
           from pathlib import Path
-          d = Path('evolution_data')
-          d.mkdir(exist_ok=True)
-          # Count memories in CI data
-          import sqlite3
           try:
               db = sqlite3.connect('data/evo_mind.db')
               mems = db.execute('SELECT COUNT(*) FROM memories WHERE deleted_at IS NULL').fetchone()[0]
@@ -66,10 +62,12 @@ jobs:
               db.close()
           except:
               mems, rules = 0, 0
-          data = {'date': '$(date +%Y-%m-%d)', 'memories': mems, 'rules': rules}
-          json.dump(data, open(f'evolution_data/$(date +%Y-%m-%d).json','w'), indent=2)
+          data = {'date': '\$(date +%Y-%m-%d)', 'memories': mems, 'rules': rules}
+          Path('evolution_data').mkdir(exist_ok=True)
+          json.dump(data, open(f'evolution_data/\$(date +%Y-%m-%d).json','w'), indent=2)
           print(f'进化记录: {mems} 记忆, {rules} 规则')
           "
+          echo "进化完成"
 
       - name: 提交进化数据
         env:
