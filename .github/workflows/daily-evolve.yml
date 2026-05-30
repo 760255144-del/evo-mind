@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   evolve:
@@ -60,9 +61,11 @@ jobs:
           "
 
       - name: 提交进化数据
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "钱生钱"
           git config user.email "qianshengqian@evo-mind.ai"
-          git add evolution_data/
-          git diff --staged --quiet || git commit -m "📈 每日进化 [$(date +%Y-%m-%d)]"
-          git push || true
+          git add evolution_data/ || true
+          git diff --staged --quiet || git commit -m "📈 进化 [$(date +%Y-%m-%d)]"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/760255144-del/evo-mind.git main || true
