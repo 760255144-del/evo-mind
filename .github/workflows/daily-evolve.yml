@@ -7,6 +7,9 @@ on:
   push:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
   actions: write
@@ -17,7 +20,6 @@ jobs:
     timeout-minutes: 15
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       CI: true
       GITHUB_ACTIONS: true
       PYTHONPATH: ${{ github.workspace }}/src
