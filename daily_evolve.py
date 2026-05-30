@@ -491,17 +491,36 @@ class DailyEvolutionEngine:
             log.edits_applied = train_state.total_edits
             log.actions_taken = goal.actions_executed
 
-            # 9. 采集进化后状态
+            # 9. 记忆整合 + 规则学习
+            try:
+                from evo_mind.consolidation.engine import ConsolidationEngine
+                from evo_mind.types import ConsolidationTrigger
+                cons = ConsolidationEngine(store, None, store.embedding, store.vector_store, store.db,
+                                           config={"min_candidates": 3, "similarity_threshold": 0.7})
+                cons_result = await cons.consolidate(trigger=ConsolidationTrigger.MANUAL)
+                print(f"  📦 整合: {cons_result.groups_formed} 组, {cons_result.summaries_generated} 摘要, {cons_result.memories_pruned} 修剪")
+            except Exception as e:
+                print(f"  ⚠️ 整合跳过: {e}")
+
+            try:
+                from evo_mind.evolution.engine import EvolutionEngine
+                evo = EvolutionEngine(store, store.db)
+                rules = await evo.evolve()
+                print(f"  🧠 规则: {len(rules)} 条新规则")
+            except Exception as e:
+                print(f"  ⚠️ 规则跳过: {e}")
+
+            # 10. 采集进化后状态
             state_after = await self._collect_state(db)
             log.system_state_after = state_after
             log.fitness_delta = state_after.get("system_health", 0) - state.get("system_health", 0)
 
-            # 10. 评估目标完成度
+            # 11. 评估目标完成度
             goal.completed = log.fitness_delta > 0.005
             goal.completed_at = _now()
             log.duration_seconds = time.monotonic() - start_time
 
-            # 11. 生成摘要
+            # 12. 生成摘要
             log.summary = (
                 f"[{_today()}] {'✅ 完成' if goal.completed else '⚠️ 部分完成'}: "
                 f"{goal.title} | "
