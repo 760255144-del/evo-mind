@@ -254,11 +254,12 @@ class GoalGenerator:
             )
 
         # 如果昨天失败了，降低难度
-        if self.yesterday_log and not self.yesterday_log.goal:
+        yesterday_goal = getattr(self.yesterday_log, 'goal', None) if self.yesterday_log else None
+        if self.yesterday_log and not yesterday_goal:
             candidates.sort(key=lambda g: g.difficulty == GoalDifficulty.EASY, reverse=True)
-        elif self.yesterday_log and self.yesterday_log.goal:
-            yesterday_goal = self.yesterday_log.goal
-            if yesterday_goal.completed:
+        elif self.yesterday_log and yesterday_goal:
+            yesterday_completed = getattr(yesterday_goal, 'completed', False) if yesterday_goal else False
+            if yesterday_completed:
                 # 昨天成功 → 今天挑战更难
                 candidates.sort(key=lambda g: (
                     g.difficulty == GoalDifficulty.AMBITIOUS,
