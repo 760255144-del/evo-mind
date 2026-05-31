@@ -27,13 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore evolution DB cache
-        uses: actions/cache@v4
+      - name: Download previous DB (persistent evolution)
+        uses: actions/download-artifact@v4
         with:
+          name: evo-mind-db
           path: data/
-          key: evo-mind-db-main
-          restore-keys: |
-            evo-mind-db-
+        continue-on-error: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -44,8 +43,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install chromadb aiosqlite pydantic pydantic-settings \
-            typer rich pluggy numpy scipy xxhash tenacity structlog tomli \
-            sentence-transformers uuid7 || true
+            typer rich pluggy numpy scipy xxhash tenacity structlog tomli
 
       - name: 钱生钱进化
         run: |
@@ -70,6 +68,12 @@ jobs:
           print(f'进化记录: {mems} 记忆, {rules} 规则')
           "
           echo "进化完成"
+
+      - name: Upload DB for next run (persist evolution state)
+        uses: actions/upload-artifact@v4
+        with:
+          name: evo-mind-db
+          path: data/
 
       - name: 提交进化数据
         env:

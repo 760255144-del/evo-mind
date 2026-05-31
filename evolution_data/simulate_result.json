@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-05-31T12:34:58.466709+00:00",
+  "target_win_rate": 0.8,
+  "achieved_win_rate": 0.8952333333333334,
+  "best_params": {
+    "fast": 19,
+    "slow": 39,
+    "stop_loss": 3.46,
+    "take_profit": 20.0,
+    "min_volume_ratio": 0.61,
+    "entry_delay": 0,
+    "trailing_stop": 1.58,
+    "vol_filter": 1.93
+  },
+  "history": [
+    {
+      "win_rate": 0.5714,
+      "trades": 7,
+      "pnl_pct": 16.25,
+      "max_dd": 5.64,
+      "avg_win": 5.5,
+      "avg_loss": -1.92,
+      "fitness": 0.5984
+    },
+    {
+      "win_rate": 0.5714,
+      "trades": 7,
+      "pnl_pct": 16.25,
+      "max_dd": 5.64,
+      "avg_win": 5.5,
+      "avg_loss": -1.92,
+      "fitness": 0.5984
+    },
+    {
+      "win_rate": 0.5714,
+      "trades": 7,
+      "pnl_pct": 16.25,
+      "max_dd": 5.64,
+      "avg_win": 5.5,
+      "avg_loss": -1.92,
+      "fitness": 0.5984
+    },
+    {
+      "win_rate": 0.5714,
+      "trades": 7,
+      "pnl_pct": 16.25,
+      "max_dd": 5.64,
+      "avg_win": 5.5,
+      "avg_loss": -1.92,
+      "fitness": 0.5984
+    },
+    {
+      "win_rate": 0.5714,
+      "trades": 7,
+      "pnl_pct": 16.25,
+      "max_dd": 5.64,
+      "avg_win": 5.5,
+      "avg_loss": -1.92,
+      "fitness": 0.5984
+    }
+  ]
+}
