@@ -1,5 +1,5 @@
 {
   "date": "$(date +%Y-%m-%d)",
-  "memories": 421,
+  "memories": 411,
   "rules": 6
 }
