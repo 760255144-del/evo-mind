@@ -28,11 +28,21 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download previous DB (persistent evolution)
+        id: download_db
         uses: actions/download-artifact@v4
         with:
           name: evo-mind-db
           path: data/
         continue-on-error: true
+
+      - name: Check DB restored
+        run: |
+          if [ -f data/evo_mind.db ]; then
+            echo "DB restored from previous run"
+            ls -la data/
+          else
+            echo "Fresh start (no previous DB)"
+          fi
 
       - name: Setup Python
         uses: actions/setup-python@v5
