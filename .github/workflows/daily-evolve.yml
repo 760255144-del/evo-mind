@@ -54,7 +54,9 @@ jobs:
           python3 daily_evolve.py
           python3 -c "
           import json, sqlite3
+          from datetime import datetime
           from pathlib import Path
+          today = datetime.utcnow().strftime('%Y-%m-%d')
           try:
               db = sqlite3.connect('data/evo_mind.db')
               mems = db.execute('SELECT COUNT(*) FROM memories WHERE deleted_at IS NULL').fetchone()[0]
@@ -62,9 +64,9 @@ jobs:
               db.close()
           except:
               mems, rules = 0, 0
-          data = {'date': '\$(date +%Y-%m-%d)', 'memories': mems, 'rules': rules}
+          data = {'date': today, 'memories': mems, 'rules': rules}
           Path('evolution_data').mkdir(exist_ok=True)
-          json.dump(data, open(f'evolution_data/\$(date +%Y-%m-%d).json','w'), indent=2)
+          json.dump(data, open(f'evolution_data/{today}.json','w'), indent=2)
           print(f'进化记录: {mems} 记忆, {rules} 规则')
           "
           echo "进化完成"
